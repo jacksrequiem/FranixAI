@@ -111,7 +111,6 @@ public class GameManager : MonoBehaviour
 				new Vector3 (600 + 5 * i, 5, 400), Quaternion.identity));
 			//grab a component reference
 			villager = villagers [i].GetComponent<Villager> ();
-			villagers[i].GetComponent<MeshRenderer>().material.SetColor("_Color", Color.green);
 			//set values in the Vehicle script
 			villager.Index = i;
 			
