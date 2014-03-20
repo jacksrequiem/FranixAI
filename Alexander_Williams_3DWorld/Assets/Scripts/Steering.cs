@@ -6,12 +6,18 @@ using System.Collections.Generic;
 
 public class Steering : MonoBehaviour
 {
+	private GameManager gameManager;
 	
 	//movement variables - exposed in inspector panel
 	public float maxSpeed = 50.0f;
 	//maximum speed of vehicle
 	public float maxForce = 15.0f;
 	// maximimum force allowed
+	
+	//wander varables
+	public int _wanAngle;
+	public int radiusOfCircle;
+	public int _wanChange;
 	
 	//movement variables - updated by this component
 	private float speed = 0.0f;
@@ -32,6 +38,7 @@ public class Steering : MonoBehaviour
 	public void Start ()
 	{
 		Velocity = Vector3.zero;
+		gameManager = GameManager.Instance;
 	}
 	
 	public Vector3 Pursuit (Vector3 fwd)
@@ -88,6 +95,41 @@ public class Steering : MonoBehaviour
 		
 		dv -= transform.forward * speed;//subtract velocity to get vector in that direction
 		return dv;
+	}
+	
+	public Vector3 Wander()
+	{
+		var tForce = Vector3.zero;
+
+		Vector3 distance = transform.forward*2;// distance
+		Vector3 refer = new Vector3(this.transform.position.x + distance.x,0,this.transform.position.z + distance.z);
+		Vector3 wanderForce = Vector3.forward * radiusOfCircle;
+		wanderForce = Quaternion.AngleAxis(_wanAngle, Vector3.up) * wanderForce;
+		_wanAngle +=  Random.Range(0, 2 * _wanChange) - _wanChange;
+		refer = refer + wanderForce;
+
+		tForce += Seek(refer);
+
+		return tForce;
+
+	}
+	
+	public Vector3 Follow()
+	{
+		var tForce = Vector3.zero;
+		
+		if(gameManager.Followers[0] == this || gameManager.Followers[0] == null)
+		{
+
+			tForce += Arrival(gameManager.Mayor.transform.position);	
+		}
+		else
+		{
+			
+			tForce += Arrival(gameManager.Followers[gameManager.Followers.Count-1].transform.position);
+		}
+		
+		return tForce;
 	}
 	
 	// same as seek pos above, but parameter is game object

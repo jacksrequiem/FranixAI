@@ -60,7 +60,6 @@ public class Werewolf : MonoBehaviour {
 			Destroy(death.Follower);
 			Destroy(deadVillager);
 			gameManager.createNewVillager();
-			gameManager.Dead.DeadVillagers = gameManager.Dead.DeadVillagers + 1;
 			
 			findTarget();
 		}
@@ -119,7 +118,7 @@ public class Werewolf : MonoBehaviour {
 		//Keeps werewolves away from Villager Spawn point
 		steeringForce += gameManager.avoidWt * steering.AvoidObstacle(respawnPont, 100f);
 		
-		
+
 		float mayDist = Vector3.Distance(this.transform.position, gameManager.Mayor.transform.position);
 		
 		//Choose new villager to chase (closest villager)

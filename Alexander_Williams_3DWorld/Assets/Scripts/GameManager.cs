@@ -6,6 +6,15 @@ using System.Collections.Generic;
 [System.Serializable]
 public class GameManager : MonoBehaviour
 {
+
+	//path following related variables
+	public Vector3[,] grid;
+	private GameObject[,] gameObjectGrid;
+	public Object marker;
+	public List<Vector3> samplePath;
+
+
+
 	// weight parameters are set in editor and used by all villagers 
 	// if they are initialized here, the editor will override settings	 
 	// weights used to arbitrate btweeen concurrent steering forces 
@@ -48,13 +57,7 @@ public class GameManager : MonoBehaviour
 	//mayor and accessor
 	private GameObject mayor;
 	public GameObject Mayor {get{return mayor;}}
-	
-	//Text GUI and accessors
-	private Saved savedText;
-	public Saved Saved {get{return savedText;}}
-	
-	private Dead deadText;
-	public Dead Dead {get{return deadText;}}
+
 	
 	//list of werewolves with accessor 
 	private List<GameObject> werewolves = new List<GameObject>();
@@ -98,7 +101,25 @@ public class GameManager : MonoBehaviour
 		Werewolf werewolf;
 		Follow follower;
 		
-		
+
+		//path following related things
+		grid = new Vector3[10,10];
+		gameObjectGrid = new GameObject[10,10];
+		for(int i = 0; i < 10; i ++)
+		{
+			for(int j = 0; j < 10; j++)
+			{
+				grid[i,j] = new Vector3(50 + (50 * i), 0, 50 + (50*j));
+
+				Instantiate(marker, grid[i,j], Quaternion.identity);
+			}
+			
+		}
+		samplePath = new List<Vector3>();
+		samplePath.Add(grid[4,4]);
+		//end path following
+
+
 		
 		obstacles = GameObject.FindGameObjectsWithTag ("Obstacle");
 		
@@ -168,10 +189,6 @@ public class GameManager : MonoBehaviour
 			
 			
 		}
-		
-		//references to GUI texts in Game
-		savedText = GameObject.FindGameObjectWithTag("Saved").GetComponent<Saved>();
-		deadText = GameObject.FindGameObjectWithTag("Dead").GetComponent<Dead>();
 		
 	}
 	

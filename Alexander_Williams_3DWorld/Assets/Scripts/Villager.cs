@@ -17,11 +17,6 @@ public class Villager : MonoBehaviour
 	private Steering steering;
 	private GameManager gameManager;
 	
-	//wander varables
-	public int _wanAngle;
-	public int radiusOfCircle;
-	public int _wanChange;
-	
 	//follower reference for deletion
 	private Follow follower;
 	public Follow Follower {get{return 
@@ -79,7 +74,6 @@ public class Villager : MonoBehaviour
 			Destroy(savedVillager);
 			Destroy(this);
 			gameManager.createNewVillager();
-			gameManager.Saved.SavedVillagers = gameManager.Saved.SavedVillagers + 1;
 			
 			Destroy(savedVillager);	
 			
@@ -111,6 +105,7 @@ public class Villager : MonoBehaviour
 		
 		// the CharacterController moves us subject to physical constraints
 		characterController.Move (moveDirection * Time.deltaTime);
+		transform.eulerAngles = new Vector3(0.0f, this.transform.eulerAngles.y, this.transform.eulerAngles.z);
 	}
 	
 	//Uses the various Movement Behaviors to calculate the vector to
@@ -147,19 +142,19 @@ public class Villager : MonoBehaviour
 			else if(Vector3.Distance(this.transform.position, gameManager.Mayor.transform.position) < 40 && leaderFollowBool == false)
 			{
 				gameManager.Followers.Add(this);
-				steeringForce += 10 * leaderFollow();
+				steeringForce += 10 * steering.Follow();
 				steeringForce += gameManager.separationWt * Separation();
 				steeringForce += gameManager.cohesionWt * Cohesion();
 			}
 			else if(leaderFollowBool == true)
 			{
-				steeringForce += 15 * leaderFollow();
+				steeringForce += 15 * steering.Follow();
 				steeringForce += gameManager.separationWt * Separation();
 				steeringForce += gameManager.cohesionWt * Cohesion();
 			}
 			else
 			{	
-				steeringForce += 2 * wander();
+				steeringForce += 2 * steering.Wander();
 			}
 		}
 		
@@ -268,44 +263,7 @@ public class Villager : MonoBehaviour
 		sum = sum - this.steering.Velocity;
 
 		return steering.AlignTo(sum);
-	}
-
-	private Vector3 wander()
-	{
-
-		steeringForce = Vector3.zero;
-
-		Vector3 distance = transform.forward*2;// distance
-		Vector3 refer = new Vector3(this.transform.position.x + distance.x,0,this.transform.position.z + distance.z);
-		Vector3 wanderForce = Vector3.forward * radiusOfCircle;
-		wanderForce = Quaternion.AngleAxis(_wanAngle, Vector3.up) * wanderForce;
-		_wanAngle +=  Random.Range(0, 2 * _wanChange) - _wanChange;
-		refer = refer + wanderForce;
-
-		steeringForce += steering.Seek(refer);
-
-		return steeringForce;
-
 	}	
-	
-	private Vector3 leaderFollow()
-	{
-		steeringForce = Vector3.zero;
-	
-		
-		if(gameManager.Followers[0] == this || gameManager.Followers[0] == null)
-		{
-
-			steeringForce += steering.Arrival(gameManager.Mayor.transform.position);	
-		}
-		else
-		{
-			
-			steeringForce += steering.Arrival(gameManager.Followers[gameManager.Followers.Count-1].transform.position);
-		}
-		
-		return steeringForce;
-	}
 	
 	private Vector3 runAway()
 	{
