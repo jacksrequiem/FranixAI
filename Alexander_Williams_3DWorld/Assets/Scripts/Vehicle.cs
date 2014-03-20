@@ -84,6 +84,7 @@ public class Vehicle : MonoBehaviour
 			transform.forward = velocity;
 			MoveAndAlign ();
 		}
+		transform.eulerAngles = new Vector3(0.0f, this.transform.eulerAngles.y, this.transform.eulerAngles.z);
 	}
 	
 
