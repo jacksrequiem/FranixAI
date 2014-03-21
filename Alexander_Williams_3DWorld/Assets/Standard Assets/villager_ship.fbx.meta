@@ -1,23 +1,13 @@
 fileFormatVersion: 2
-guid: 7d65afcfadd847242b05e74789e6839c
+guid: 4afac8a5135a13c4ab48974d7074292a
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
-    100000: polySurface1
-    100002: pPyramid1
-    100004: pTorus1
-    100006: transform1
-    100008: transform2
-    100010: //RootNode
-    400000: polySurface1
-    400002: pPyramid1
-    400004: pTorus1
-    400006: transform1
-    400008: transform2
-    400010: //RootNode
-    2300000: polySurface1
-    3300000: polySurface1
-    4300000: polySurface1
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: pSphere1
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -37,7 +27,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: .00999999978
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -70,5 +60,4 @@ ModelImporter:
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
-  additionalBone: 0
   userData: 
